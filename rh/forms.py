@@ -1,6 +1,6 @@
 from django import forms
 from django.db.models import Q
-from .models import Filial, Setor, Cargo, Estado, Funcionario
+from .models import Filial, Setor, Cargo, Estado, Funcionario, User
 
 class FilialForm(forms.ModelForm):
 	class Meta:

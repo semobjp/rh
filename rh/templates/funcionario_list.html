@@ -2,7 +2,7 @@
 {% load bootstrap3 %}
 
 {% block content %}
-    <a href="{% url 'funcionario_new' %}" class="btn btn-success float-right">Novo Funcionário</a>
+    {% if perms.rh.perm_add_rh %}<a href="{% url 'funcionario_new' %}" class="btn btn-success float-right">Novo Funcionário</a>{% endif %}
     <h1>Funcionários</h1>
     <form method="POST" class="post-form">
       {% csrf_token %}

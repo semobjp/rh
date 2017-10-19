@@ -5,15 +5,16 @@ from django.http import HttpResponseForbidden
 from django.contrib import messages
 from django.contrib.auth import logout
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import User, Group, Permission
 from django.contrib.contenttypes.models import ContentType
 
 from .models import Funcionario
 from .forms import FilialForm, SetorForm, CargoForm, EstadoForm, FuncionarioForm, SearchFuncionarioForm
 
+@permission_required('rh.perm_add_rh')
 @login_required
-def funcionario_new(request):
+def funcionario_new(request):    
     funcionario_form = FuncionarioForm()
     user_form = UserCreationForm(prefix="user")
 
@@ -107,22 +108,15 @@ def listar(request):
 @login_required
 def editar(request, pk):
     registro = Funcionario.objects.get(pk=pk)
-
     funcionario_form = FuncionarioForm(instance=registro)
-    user_form = UserCreationForm(prefix="user", instance=registro.user)
 
     if request.method == "POST":
-        user_form = UserCreationForm(request.POST, instance=registro.user)
         funcionario_form = FuncionarioForm(request.POST, instance=registro)
+        if funcionario_form.is_valid():
+            funcionario_form.save()
+            messages.success(request, 'Funcionário alterado com sucesso.')
 
-        if user_form.is_valid() and funcionario_form.is_valid():
-            user = user_form.save()
-            funcionario = funcionario_form.save(commit=False)
-            funcionario.user = user
-            funcionario.save()
-            messages.success(request, 'Funcionário cadastrado com sucesso.')
-
-    return render(request, 'form_funcionario.html', locals())
+    return render(request, 'edit_funcionario.html', locals())
 
 @login_required
 def visualizar(request, pk):
