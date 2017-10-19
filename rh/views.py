@@ -1,40 +1,37 @@
 from django.shortcuts import redirect, render
-from django.contrib.auth.forms import UserCreationForm
 from django.http import HttpResponse
 from django.template import loader
+from django.http import HttpResponseForbidden
 from django.contrib import messages
 from django.contrib.auth import logout
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseForbidden
-
 from django.contrib.auth.models import User, Group, Permission
 from django.contrib.contenttypes.models import ContentType
+
 from .models import Funcionario
 from .forms import FilialForm, SetorForm, CargoForm, EstadoForm, FuncionarioForm, SearchFuncionarioForm
 
 @login_required
 def funcionario_new(request):
-    if request.user.has_perm('perm_add_rh'):
-        funcionario_form = FuncionarioForm()
-        user_form = UserCreationForm(prefix="user")
+    funcionario_form = FuncionarioForm()
+    user_form = UserCreationForm(prefix="user")
 
-        if request.method == "POST":
-            user_form = UserCreationForm(request.POST, prefix="user")
-            funcionario_form = FuncionarioForm(request.POST)
+    if request.method == "POST":
+        user_form = UserCreationForm(request.POST, prefix="user")
+        funcionario_form = FuncionarioForm(request.POST)
 
-            if user_form.is_valid() and funcionario_form.is_valid():
-                user = user_form.save()
-                funcionario = funcionario_form.save(commit=False)
-                funcionario.user = user       
-                funcionario.save()     
-                if funcionario.setor.descricao_setor == 'Recursos Humanos':
-                    group = Group.objects.get(name="rh")
-                    funcionario.user.groups.add(group)
-                messages.success(request, 'Funcionário cadastrado com sucesso.')
+        if user_form.is_valid() and funcionario_form.is_valid():
+            user = user_form.save()
+            funcionario = funcionario_form.save(commit=False)
+            funcionario.user = user       
+            funcionario.save()     
+            #if funcionario.setor.descricao_setor == 'Recursos Humanos':
+            #    group = Group.objects.get(name="rh")
+            #    funcionario.user.groups.add(group)
+            messages.success(request, 'Funcionário cadastrado com sucesso.')
 
-        return render(request, 'form_funcionario.html', locals())
-    else:
-        return HttpResponseForbidden()
+    return render(request, 'form_funcionario.html', locals())
 
 
 @login_required
@@ -56,14 +53,13 @@ def setor_new(request):
         if form.is_valid():
             setor = form.save(commit=False)
             setor.save()
-            if setor.descricao_setor == 'Recursos Humanos':
-                rh, created = Group.objects.get_or_create(name='rh')
-                ct = ContentType.objects.get_for_model(Funcionario)
-                permission = Permission.objects.create(codename='perm_add_rh',
-                                                        name='Permissão Adicionar',
-                                                        content_type=ct)
-                rh.permissions.add(permission)
-
+            #if setor.descricao_setor == 'Recursos Humanos':
+            #    rh, created = Group.objects.get_or_create(name='rh')
+            #    ct = ContentType.objects.get_for_model(Funcionario)
+            #    permission = Permission.objects.create(codename='perm_add_rh',
+            #                                            name='Permissão Adicionar',
+            #                                            content_type=ct)
+            #    rh.permissions.add(permission)
             messages.success(request, 'Setor cadastrado com sucesso.')
     else:
         form = SetorForm()
@@ -124,9 +120,6 @@ def editar(request, pk):
             funcionario = funcionario_form.save(commit=False)
             funcionario.user = user
             funcionario.save()
-            if funcionario.setor.descricao_setor == 'Recursos Humanos':
-                group = Group.objects.get(name="rh")
-                funcionario.user.groups.add(group)
             messages.success(request, 'Funcionário cadastrado com sucesso.')
 
     return render(request, 'form_funcionario.html', locals())
