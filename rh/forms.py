@@ -38,7 +38,10 @@ class SearchFuncionarioForm(forms.Form):
         funcionario = None
         setor = None
 
-        funcionario = Funcionario.objects.filter(Q(nome__icontains=cleaned_data.get("nome")) | Q(setor=cleaned_data.get("setor")))
+        if cleaned_data.get("setor") != None:
+        	funcionario = Funcionario.objects.filter(Q(nome__icontains=cleaned_data.get("nome")), Q(setor=cleaned_data.get("setor")))
+        else:
+        	funcionario = Funcionario.objects.filter(Q(nome__icontains=cleaned_data.get("nome")))
 
         if self.errors:
             return cleaned_data
