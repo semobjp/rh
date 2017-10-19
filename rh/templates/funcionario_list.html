@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load bootstrap3 %}
+
+{% block content %}
+    {% if perms.rh.perm_add_rh %}<a href="{% url 'funcionario_new' %}" class="btn btn-success float-right">Novo Funcionário</a>{% endif %}
+    <h1>Funcionários</h1>
+    <form method="POST" class="post-form">
+      {% csrf_token %}
+      {% bootstrap_form form %}      
+      {% buttons %}
+        <button type="submit" class="btn btn-dark">
+          Pesquisar
+        </button>
+      {% endbuttons %}
+    </form>
+    {% if funcionario %}      
+          <table class="table table-striped table-bordered table-hover">
+            <thead>
+              <th>#</th>
+              <th>Nome</th>
+              <th>CPF</th>
+              <th>Filial</th>
+              <th>Setor</th>
+              <th>Cargo</th>
+            </thead> 
+            {% for funcionario in funcionario %}
+            <tr onclick="Link('{% url 'visualizar' funcionario.id %}')">
+              <td>{{ funcionario.id }}</td>
+              <td>{{ funcionario.nome }}</td>
+              <td>{{ funcionario.cpf }}</td>
+              <td>{{ funcionario.filial }}</td>
+              <td>{{ funcionario.setor }}</td>
+              <td>{{ funcionario.cargo }}</td>
+            </tr>    
+            {% endfor %}     
+          </table>  
+    {% endif %}       
+{% endblock %}

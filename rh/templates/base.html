@@ -1,0 +1,54 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Aplicação</title>
+	<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+	<link rel="stylesheet" href="{% static 'css/materialdesignicons.min.css' %}">
+	<link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+	<div class="wrapper">
+		<nav id="sidebar" class="bg-dark">
+			<h1>Aplicação</h1>
+			<ul class="components">
+				<li>
+					<a href="#rhSubmenu" data-toggle="collapse" aria-expanded="false"><span class="mdi mdi-account-multiple mdi-24px"></span> Recursos Humanos</a>
+					<ul class="collapse" id="rhSubmenu">
+						<li><a href="{% url 'listar' %}">Funcionários</a></li>
+					</ul>
+				</li>
+				<li>
+					<a href="{% url 'logout' %}" class="logout"><span class="mdi mdi-power mdi-24px"></span> Sair ({{ request.user }})</a>
+				</li>
+			</ul>
+		</nav>
+		<div id="content">
+			<a id="sidebarButton" class="btn btn-outline-dark btn-lg sidebarButton">
+				<span class="mdi mdi-menu mdi-24px"></span>
+			</a>
+			{% block content %}
+			{% endblock %}
+		</div>
+	</div>
+	<script src="{% static 'js/jquery-3.2.1.slim.min.js' %}"></script>
+	<script src="{% static 'js/popper.min.js' %}"></script>
+	<script src="{% static 'js/bootstrap.min.js' %}"></script>
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$('#sidebarButton').on('click', function () {
+				$('#sidebar').toggleClass('active');
+			});
+		});
+
+		function Link(url)
+		{
+			document.location.href = url;
+		}
+	</script>
+</body>
+</html>

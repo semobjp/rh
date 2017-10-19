@@ -1,0 +1,28 @@
+{% extends "base_login.html" %}
+{% load bootstrap3 %}
+
+{% block content %}
+
+
+<form method="post" action="{% url 'login' %}" class="form-login">
+    <h1 class="mb-4">Aplicação</h1>
+    {% if next %}
+        {% if user.is_authenticated %}
+        <div class="alert alert-danger" role="alert">Seu usuário não possui acesso a esta página.</div>
+        {% else %}
+        <div class="alert alert-info" role="alert">Faça o login para visualizar esta página.</div>
+        {% endif %}
+    {% endif %}
+    {% if form.errors %}
+        <div class="alert alert-danger" role="alert">
+            Usuário ou senha incorretos. Tente novamente.
+        </div>
+    {% endif %}
+    {% csrf_token %}
+    <input type="text" name="username" autofocus="" maxlength="254" class="form-control username" placeholder="Usuário" title="" required="" id="id_username">
+    <input type="password" name="password" class="form-control password" placeholder="Senha" title="" required="" id="id_password">
+    <input type="submit" value="Login" class="btn btn-dark btn-block mt-2" />
+    <input type="hidden" name="next" value="{{ next }}" />
+</form>
+
+{% endblock %}

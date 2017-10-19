@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load bootstrap3 %}
+
+{% block content %}
+    <a href="{% url 'editar' funcionario.id %}" class="btn btn-success float-right"><span class="mdi mdi-pencil"></span> Editar</a>
+    <h1 class="mb-4">Detalhes: {{ funcionario.nome }}</h1>
+    {% if funcionario %}      
+          <h2 style="font-size: 1.5rem; border-bottom: 1px solid #ccc;padding-bottom: 10px;margin-bottom:20px;">Dados Pessoais</h2>
+          <table class="table table-striped table-bordered">
+            <tr>
+              <th>Usuário</th>
+              <td colspan="2">{{ user.username }}</td>
+              <th>Nome</th>
+              <td colspan="2">{{ funcionario.nome }}</td>
+            </tr> 
+            <tr>
+              <th>CPF</th>
+              <td>{{ funcionario.cpf }}</td>
+              <th>Nascimento</th>
+              <td>{{ funcionario.nascimento }}</td>
+              <th>Estado Civil</th>
+              <td>{{ funcionario.estado_civil }}</td>
+            </tr> 
+            <tr>
+              <th>Mãe</th>
+              <td colspan="2">{{ funcionario.mae }}</td>
+              <th>Pai</th>
+              <td colspan="2">{{ funcionario.pai }}</td>
+            </tr> 
+            <tr>
+              <th>Endereço</th>
+              <td>{{ funcionario.rua }}</td>
+              <th>Número</th>
+              <td>{{ funcionario.numero }}</td>
+              <th>Bairro</th>
+              <td>{{ funcionario.bairro }}</td>
+            </tr> 
+            <tr>
+              <th>CEP</th>
+              <td>{{ funcionario.cep }}</td>
+              <th>Cidade</th>
+              <td>{{ funcionario.cidade }}</td>
+              <th>Estado</th>
+              <td>{{ funcionario.estado }}</td>
+            </tr> 
+          </table>
+          <h2 style="font-size: 1.5rem; border-bottom: 1px solid #ccc;padding-bottom: 10px;margin-bottom:20px;">Dados Funcionais</h2>
+          <table class="table table-striped table-bordered">
+            <tr>
+              <th>Filial</th>
+              <td>{{ funcionario.filial }}</td>
+              <th>Vínculo</th>
+              <td>{{ funcionario.vinculo }}</td>
+            </tr>
+            <tr>
+              <th>Setor</th>
+              <td>{{ funcionario.setor }}</td>
+              <th>Cargo</th>
+              <td>{{ funcionario.cargo }}</td>
+            </tr> 
+            <tr>
+              <th>Laudo</th>
+              <td colspan="3">{{ funcionario.laudo }}</td>
+            </tr> 
+            
+          </table>  
+    {% endif %}       
+{% endblock %}
