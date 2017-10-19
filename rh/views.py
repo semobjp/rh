@@ -34,7 +34,7 @@ def funcionario_new(request):
 
     return render(request, 'form_funcionario.html', locals())
 
-
+@permission_required('rh.perm_add_rh')
 @login_required
 def filial_new(request):
     if request.method == "POST":
@@ -47,6 +47,7 @@ def filial_new(request):
         form = FilialForm()
     return render(request, 'form_generic.html', {'form': form})
 
+@permission_required('rh.perm_add_rh')
 @login_required
 def setor_new(request):
     if request.method == "POST":
@@ -66,6 +67,7 @@ def setor_new(request):
         form = SetorForm()
     return render(request, 'form_generic.html', {'form': form})
 
+@permission_required('rh.perm_add_rh')
 @login_required
 def cargo_new(request):
     if request.method == "POST":
@@ -78,6 +80,7 @@ def cargo_new(request):
         form = CargoForm()
     return render(request, 'form_generic.html', {'form': form})
 
+@permission_required('rh.perm_add_rh')
 @login_required
 def estado_new(request):
     if request.method == "POST":
@@ -90,6 +93,7 @@ def estado_new(request):
         form = EstadoForm()
     return render(request, 'form_generic.html', {'form': form})
 
+@permission_required('rh.perm_add_rh')
 @login_required
 def listar(request):
     form = SearchFuncionarioForm()
@@ -105,6 +109,7 @@ def listar(request):
                                                funcionario=funcionario,
                                                setor=setor))
 
+@permission_required('rh.perm_add_rh')
 @login_required
 def editar(request, pk):
     registro = Funcionario.objects.get(pk=pk)
@@ -118,6 +123,7 @@ def editar(request, pk):
 
     return render(request, 'edit_funcionario.html', locals())
 
+@permission_required('rh.perm_add_rh')
 @login_required
 def visualizar(request, pk):
     perfil = Funcionario.objects.get(pk=pk)
@@ -125,5 +131,14 @@ def visualizar(request, pk):
     return render(request, 'funcionario_detail.html', {'funcionario': perfil, 'user': registro_user})
 
 @login_required
+def visualizar_usuario(request):
+    perfil = Funcionario.objects.get(user=request.user)
+    return render(request, 'funcionario_detail.html', {'funcionario': perfil})
+
+@login_required
 def logout(request):
     logout(request)
+
+@login_required
+def index(request):
+    return render(request, 'index.html')

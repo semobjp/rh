@@ -129,5 +129,5 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
-LOGIN_REDIRECT_URL = '/rh/funcionarios/listar'
+LOGIN_REDIRECT_URL = '/rh/default'
 LOGIN_URL = '/login'

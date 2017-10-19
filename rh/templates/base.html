@@ -19,7 +19,8 @@
 				<li>
 					<a href="#rhSubmenu" data-toggle="collapse" aria-expanded="false"><span class="mdi mdi-account-multiple mdi-24px"></span> Recursos Humanos</a>
 					<ul class="collapse" id="rhSubmenu">
-						<li><a href="{% url 'listar' %}">Funcionários</a></li>
+						{% if perms.rh.perm_add_rh %}<li><a href="{% url 'listar' %}">Funcionários</a></li>{% endif %}
+						<li><a href="{% url 'visualizar_usuario' %}">Meu perfil</a></li>
 					</ul>
 				</li>
 				<li>
