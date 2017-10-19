@@ -27,9 +27,9 @@ def funcionario_new(request):
             funcionario = funcionario_form.save(commit=False)
             funcionario.user = user       
             funcionario.save()     
-            #if funcionario.setor.descricao_setor == 'Recursos Humanos':
-            #    group = Group.objects.get(name="rh")
-            #    funcionario.user.groups.add(group)
+            if funcionario.setor.descricao_setor == 'Recursos Humanos':
+                group = Group.objects.get(name="rh")
+                funcionario.user.groups.add(group)
             messages.success(request, 'Funcionário cadastrado com sucesso.')
 
     return render(request, 'form_funcionario.html', locals())
@@ -54,13 +54,13 @@ def setor_new(request):
         if form.is_valid():
             setor = form.save(commit=False)
             setor.save()
-            #if setor.descricao_setor == 'Recursos Humanos':
-            #    rh, created = Group.objects.get_or_create(name='rh')
-            #    ct = ContentType.objects.get_for_model(Funcionario)
-            #    permission = Permission.objects.create(codename='perm_add_rh',
-            #                                            name='Permissão Adicionar',
-            #                                            content_type=ct)
-            #    rh.permissions.add(permission)
+            if setor.descricao_setor == 'Recursos Humanos':
+                rh, created = Group.objects.get_or_create(name='rh')
+                ct = ContentType.objects.get_for_model(Funcionario)
+                permission = Permission.objects.create(codename='perm_add_rh',
+                                                        name='Permissão Adicionar',
+                                                        content_type=ct)
+                rh.permissions.add(permission)
             messages.success(request, 'Setor cadastrado com sucesso.')
     else:
         form = SetorForm()
